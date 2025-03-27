@@ -1,0 +1,141 @@
+Design a Student Result database management system using TypeScript.
+
+interface Subject {
+  name: string;
+  marks: number;
+}
+
+interface Student {
+  id: string;
+  name: string;
+  subjects: Subject[];
+}
+
+interface Result {
+  studentId: string;
+  averageMarks: number;
+  isPassed: boolean;
+}
+
+function calculateAverage(subjects: Subject[]): number {
+  if (subjects.length === 0) {
+    console.warn("No subjects available for this student.");
+    return 0;
+  }
+  const totalMarks = subjects.reduce((sum, subject) => sum + subject.marks, 0);
+  return totalMarks / subjects.length;
+}
+
+function determinePassStatus(averageMarks: number, passingThreshold: number = 40): boolean {
+  return averageMarks >= passingThreshold;
+}
+
+function generateResult(student: Student): Result {
+  const averageMarks = calculateAverage(student.subjects);
+  const isPassed = determinePassStatus(averageMarks);
+  return {
+    studentId: student.id,
+    averageMarks: averageMarks,
+    isPassed: isPassed,
+  };
+}
+
+function displayResult(student: Student, result: Result): void {
+  console.log(`Student ID: ${student.id}`);
+  console.log(`Student Name: ${student.name}`);
+  student.subjects.forEach(subject => {
+    console.log(`  ${subject.name}: ${subject.marks}`);
+  });
+  console.log(`Average Marks: ${result.averageMarks.toFixed(2)}`);
+  console.log(`Result: ${result.isPassed ? "Passed" : "Failed"}`);
+  console.log("---");
+}
+
+const student1: Student = {
+  id: "S1001",
+  name: "John Doe",
+  subjects: [
+    { name: "Math", marks: 45 },
+    { name: "Science", marks: 38 },
+    { name: "English", marks: 50 },
+  ],
+};
+
+const student2: Student = {
+  id: "S1002",
+  name: "Alice Smith",
+  subjects: [
+    { name: "Math", marks: 70 },
+    { name: "Science", marks: 85 },
+    { name: "English", marks: 92 },
+  ],
+};
+
+const student3: Student = {
+  id: "S1003",
+  name: "Peter Jones",
+  subjects: [
+    { name: "Math", marks: 20 },
+    { name: "Science", marks: 30 },
+    { name: "English", marks: 35 },
+  ],
+};
+
+const result1 = generateResult(student1);
+const result2 = generateResult(student2);
+const result3 = generateResult(student3);
+
+displayResult(student1, result1);
+displayResult(student2, result2);
+displayResult(student3, result3);
+
+
+//Ts calculator
+class Calculator {
+  add(a: number, b: number): number {
+    return a + b;
+  }
+
+  subtract(a: number, b: number): number {
+    return a - b;
+  }
+
+  multiply(a: number, b: number): number {
+    return a * b;
+  }
+
+  divide(a: number, b: number): number {
+    if (b === 0) {
+      throw new Error("Division by zero is not allowed.");
+    }
+    return a / b;
+  }
+
+  calculate(operator: string, a: number, b: number): number | string {
+    try {
+      switch (operator) {
+        case "+":
+          return this.add(a, b);
+        case "-":
+          return this.subtract(a, b);
+        case "*":
+          return this.multiply(a, b);
+        case "/":
+          return this.divide(a, b);
+        default:
+          return "Invalid operator. Please use +, -, *, or /.";
+      }
+    } catch (error) {
+      return (error as Error).message; // Ensure TypeScript understands the error type
+    }
+  }
+}
+
+// Example usage:
+const calculator = new Calculator();
+console.log(calculator.calculate("+", 5, 3)); // Output: 8
+console.log(calculator.calculate("-", 10, 4)); // Output: 6
+console.log(calculator.calculate("*", 2, 6)); // Output: 12
+console.log(calculator.calculate("/", 10, 2)); // Output: 5
+console.log(calculator.calculate("/", 10, 0)); // Output: Division by zero is not allowed.
+console.log(calculator.calculate("%", 5, 2)); // Output: Invalid operator. Please use +, -, *, or /.
