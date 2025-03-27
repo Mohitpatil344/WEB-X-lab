@@ -1,0 +1,92 @@
+1.
+class Student {
+    name: string;
+    studentId: string;
+    grade: string;
+    constructor(name: string, studentId: string, grade: string) {
+        this.name = name;
+        this.studentId = studentId;
+        this.grade = grade;
+    }
+    getDetails(): string {
+        return `Student Name: ${this.name}, ID: ${this.studentId}, Grade: ${this.grade}`;
+    }
+}
+class GraduateStudent extends Student {
+    thesisTopic: string;
+    constructor(name: string, studentId: string, grade: string, thesisTopic: string) {
+        super(name, studentId, grade);
+        this.thesisTopic = thesisTopic;
+    }
+    getThesisTopic(): string {
+        return `Thesis Topic: ${this.thesisTopic}`;
+    }
+    getDetails(): string {
+return `Graduate Student Name: ${this.name}, ID: ${this.studentId}, Grade: ${this.grade}, Thesis Topic: ${this.thesisTopic}`;
+    }
+}
+class LibraryAccount {
+    accountId: string;
+    booksIssued: number;
+    constructor(accountId: string, booksIssued: number) {
+        this.accountId = accountId;
+        this.booksIssued = booksIssued;
+    }
+getLibraryInfo(): string {
+        return `Library Account ID: ${this.accountId}, Books Issued: ${this.booksIssued}`;
+    }
+}
+function associateStudentWithLibrary(student: Student, libraryAccount: LibraryAccount): string {
+    return `${student.getDetails()}\n${libraryAccount.getLibraryInfo()}`;
+}
+const student1 = new Student("Alice", "S123", "A");
+const gradStudent1 = new GraduateStudent("Bob", "G456", "A+", "Artificial Intelligence");
+const libraryAccount1 = new LibraryAccount("L789", 3);
+console.log(student1.getDetails());
+console.log(gradStudent1.getDetails());
+console.log(gradStudent1.getThesisTopic());
+console.log(libraryAccount1.getLibraryInfo());
+console.log(associateStudentWithLibrary(gradStudent1, libraryAccount1));
+
+2.
+
+interface Employee {
+    name: string;
+    id: number;
+    role: string;
+    getDetails(): string;
+}
+    class Manager implements Employee {
+    name: string;
+    id: number;
+    role: string;
+    department: string;
+    constructor(name: string, id: number, department: string) {
+        this.name = name;
+        this.id = id;
+        this.role = "Manager";
+        this.department = department;
+    }
+    getDetails(): string {
+        return `Name: ${this.name}, ID: ${this.id}, Role: ${this.role}, Department: ${this.department}`;
+    }
+}
+class Developer implements Employee {
+    name: string;
+    id: number;
+    role: string;
+    programmingLanguages: string[];
+    constructor(name: string, id: number, programmingLanguages: string[]) {
+        this.name = name;
+        this.id = id;
+        this.role = "Developer";
+        this.programmingLanguages = programmingLanguages;
+    }
+    getDetails(): string {
+        return `Name: ${this.name}, ID: ${this.id}, Role: ${this.role}, Programming Languages: ${this.programmingLanguages.join(", ")}`;
+    }
+}
+const manager = new Manager("Alice Johnson", 101, "IT");
+const developer = new Developer("Bob Smith", 202, ["TypeScript", "JavaScript", "Python"]);
+console.log(manager.getDetails());
+console.log(developer.getDetails());
