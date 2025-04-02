@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bookApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AngularJS Web App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="MainController">
+        <h1>Welcome to AngularJS Web App</h1>
+        <nav>
+            <a href="#login">Login</a> |
+            <a href="#book-search">Book Search</a>
+        </nav>
+    </div>
+    
+    <div ng-controller="AuthController" id="login">
+        <h2>Login</h2>
+        <form ng-submit="login()">
+            <label>Username:</label>
+            <input type="text" ng-model="user.username" required><br>
+            <label>Password:</label>
+            <input type="password" ng-model="user.password" required><br>
+            <button type="submit">Login</button>
+        </form>
+        <p>{{ message }}</p>
+    </div>
+    
+    <div ng-controller="BookController" id="book-search">
+        <h2>Book Search</h2>
+        <input type="text" ng-model="searchText" placeholder="Search by title, author, or genre">
+        <ul>
+            <li ng-repeat="book in books | bookFilter:searchText">
+                {{ book.title }} by {{ book.author }} ({{ book.genre }})
+            </li>
+        </ul>
+    </div>
+    
+    <script>
+        var app = angular.module('bookApp', []);
+        
+        app.controller('MainController', function($scope) {});
+        
+        app.controller('AuthController', function($scope) {
+            $scope.user = {};
+            $scope.message = "";
+            $scope.login = function() {
+                if ($scope.user.username === 'admin' && $scope.user.password === 'password') {
+                    $scope.message = "Login successful!";
+                } else {
+                    $scope.message = "Invalid credentials!";
+                }
+            };
+        });
+        
+        app.controller('BookController', function($scope) {
+            $scope.books = [
+                { title: 'Book One', author: 'Author A', genre: 'Fiction' },
+                { title: 'Book Two', author: 'Author B', genre: 'Non-Fiction' },
+                { title: 'Book Three', author: 'Author C', genre: 'Fantasy' }
+            ];
+        });
+        
+        app.filter('bookFilter', function() {
+            return function(books, searchText) {
+                if (!searchText) return books;
+                searchText = searchText.toLowerCase();
+                return books.filter(book => 
+                    book.title.toLowerCase().includes(searchText) || 
+                    book.author.toLowerCase().includes(searchText) || 
+                    book.genre.toLowerCase().includes(searchText)
+                );
+            };
+        });
+    </script>
+</body>
+</html>
